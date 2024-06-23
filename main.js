@@ -61,6 +61,8 @@ const genPetal = (x, y, r, num, h) => {
     let yMidHighCor1 = midHighCircPoints1[i].y
     let xMidHighCor2 = midHighCircPoints2[i].x
     let yMidHighCor2 = midHighCircPoints2[i].y
+
+    
     
     const petal = new bt.Turtle()
     petal.jump([xCor, yCor])
@@ -70,25 +72,28 @@ const genPetal = (x, y, r, num, h) => {
     petal.goTo([xMidHighCor2,yMidHighCor2])
     petal.goTo([xMidCor2,yMidCor2])
     petal.goTo([xCor, yCor])
-    // drawLines(petal.lines())
     drawLines([bt.catmullRom(petal.lines()[0],)])
+    drawLines(petal.lines())
   }
 }
 
-
-const x = 40
-const y = 40
-const r = Math.floor((Math.random() * 10) + 10)
+const r = Math.floor((Math.random() * 10) + 5)
+const x = (width - r) / 2 
+const y = 65
 const petalNum = Math.floor((Math.random() * 12) + 7)
-const petalHeight = Math.floor((Math.random() * 20) + 10)
-const circleMorph = Math.floor((Math.random() * 9) + 1)
+const petalHeight = Math.floor((Math.random() * 20) + 20)
+const innerPetalNum = Math.floor((Math.random() * 7) + 5)
+const innerPetalHeight = Math.floor((Math.random() * 10) + 5)
+const circleMorph = Math.floor((Math.random() * 8) + 1)
+const innerCircleMorph = Math.floor((Math.random() * 3) + 1)
 
 const a = genRanCir(x, y, r, circleMorph)
-  genPetal(x, y, r, petalNum, petalHeight)
-
+const b = genRanCir(x + 1.5, y + 1.5, r - 3, innerCircleMorph)
+genPetal(x, y, r, petalNum, petalHeight)
+genPetal(x, y, r, innerPetalNum, innerPetalHeight)
 
 // bt.translate([a], [20, 20]) use full for later
-drawLines([a])
+drawLines([a, b])
 
 
 
