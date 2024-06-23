@@ -2,12 +2,13 @@ const width = 125
 const height = 125
 
 setDocDimensions(width, height)
-function getCirclePoints(h, k, r, n) {
+
+function getCirclePoints(h, k, r, n, startAngle = 0) {
   const points = [];
   const angleStep = (2 * Math.PI) / n; // Angle between points
 
   for (let i = 0; i < n; i++) {
-    const angle = i * angleStep;
+    const angle = startAngle + i * angleStep;
     const x = h + r * Math.cos(angle);
     const y = k + r * Math.sin(angle);
     points.push({ x, y });
@@ -31,32 +32,60 @@ const genRanCir = (x, y, r, ran) => {
   return finCircle
 }
 
-const genPetal = (x, y, r, num) => {
+const genPetal = (x, y, r, num, h) => {
   r = r / 1.5
   x = x + r * 0.75
   y = y + r * 0.75
   const circlePoints = getCirclePoints(x, y, r, num);
-  const outerCircPoints = getCirclePoints(x, y, r + 20, num);
+  const outerCircPoints = getCirclePoints(x, y, r + h, num);
+  
+  const midCircPoints1 = getCirclePoints(x, y, r + ((h / 10)* 2.3), num, 5.9);
+  const midCircPoints2 = getCirclePoints(x, y, r + ((h / 7)* 2.3), num, -5.9);
+
+  const midHighCircPoints1 = getCirclePoints(x, y, r + ((h / 10)* 7), num, 5.9);
+  const midHighCircPoints2 = getCirclePoints(x, y, r + ((h / 10)* 7), num, -5.9);
+  
   for (let i = 0; i < circlePoints.length; i++) {
     let xCor = circlePoints[i].x
     let yCor = circlePoints[i].y
+    
     let xOutCor = outerCircPoints[i].x
     let yOutCor = outerCircPoints[i].y
     
+    let xMidCor1 = midCircPoints1[i].x
+    let yMidCor1 = midCircPoints1[i].y
+    let xMidCor2 = midCircPoints2[i].x
+    let yMidCor2 = midCircPoints2[i].y
+
+    let xMidHighCor1 = midHighCircPoints1[i].x
+    let yMidHighCor1 = midHighCircPoints1[i].y
+    let xMidHighCor2 = midHighCircPoints2[i].x
+    let yMidHighCor2 = midHighCircPoints2[i].y
+    
     const petal = new bt.Turtle()
     petal.jump([xCor, yCor])
-    petal.goTo([x,y)
-    drawLines(petal.lines())
+    petal.goTo([xMidCor1,yMidCor1])
+    petal.goTo([xMidHighCor1,yMidHighCor1])
+    petal.goTo([xOutCor,yOutCor])
+    petal.goTo([xMidHighCor2,yMidHighCor2])
+    petal.goTo([xMidCor2,yMidCor2])
+    petal.goTo([xCor, yCor])
+    // drawLines(petal.lines())
+    drawLines([bt.catmullRom(petal.lines()[0],)])
   }
 }
 
 
 const x = 40
 const y = 40
-const r = 10
+const r = Math.floor((Math.random() * 10) + 10)
+const petalNum = Math.floor((Math.random() * 12) + 7)
+const petalHeight = Math.floor((Math.random() * 20) + 10)
+const circleMorph = Math.floor((Math.random() * 9) + 1)
 
-const a = genRanCir(x, y, r, Math.floor(Math.random() * 10))
-genPetal(x, y, r, 5)
+const a = genRanCir(x, y, r, circleMorph)
+  genPetal(x, y, r, petalNum, petalHeight)
+
 
 // bt.translate([a], [20, 20]) use full for later
 drawLines([a])
