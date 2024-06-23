@@ -1,7 +1,23 @@
+/*
+@title: AFlowerForYou
+@author: SidakSingh
+@snapshot: image2.png
+*/
+
 const width = 125
 const height = 125
-
 setDocDimensions(width, height)
+
+const r = Math.floor((Math.random() * 10) + 5)
+const x = (width - r) / 2 
+const y = 65
+const petalNum = Math.floor((Math.random() * 12) + 7)
+const petalHeight = Math.floor((Math.random() * 20) + 20)
+const innerPetalNum = Math.floor((Math.random() * 7) + 5)
+const innerPetalHeight = Math.floor((Math.random() * 10) + 5)
+const circleMorph = Math.floor((Math.random() * 8) + 1)
+const innerCircleMorph = Math.floor((Math.random() * 3) + 1)
+// all of the const values above can be changed as per your preference
 
 function getCirclePoints(h, k, r, n, startAngle = 0) {
   const points = [];
@@ -63,7 +79,6 @@ const genPetal = (x, y, r, num, h) => {
     let yMidHighCor2 = midHighCircPoints2[i].y
 
     
-    
     const petal = new bt.Turtle()
     petal.jump([xCor, yCor])
     petal.goTo([xMidCor1,yMidCor1])
@@ -77,23 +92,30 @@ const genPetal = (x, y, r, num, h) => {
   }
 }
 
-const r = Math.floor((Math.random() * 10) + 5)
-const x = (width - r) / 2 
-const y = 65
-const petalNum = Math.floor((Math.random() * 12) + 7)
-const petalHeight = Math.floor((Math.random() * 20) + 20)
-const innerPetalNum = Math.floor((Math.random() * 7) + 5)
-const innerPetalHeight = Math.floor((Math.random() * 10) + 5)
-const circleMorph = Math.floor((Math.random() * 8) + 1)
-const innerCircleMorph = Math.floor((Math.random() * 3) + 1)
+const genStem = (x, y, r, petalHeight) => {
+  const offset = 8
+  const stem = new bt.Turtle()
+  stem.jump([x + offset, y - petalHeight + 5])
+  stem.goTo([x + offset, 10])
+  stem.goTo([x + offset - 5, 10])
+  stem.goTo([x + offset - 5, y - petalHeight + 5])
+  stem.goTo([x + offset, y - petalHeight + 5])
+  drawLines([bt.catmullRom(stem.lines()[0])])
+}
 
-const a = genRanCir(x, y, r, circleMorph)
-const b = genRanCir(x + 1.5, y + 1.5, r - 3, innerCircleMorph)
-genPetal(x, y, r, petalNum, petalHeight)
-genPetal(x, y, r, innerPetalNum, innerPetalHeight)
+const genFlower = (r, x, y, petalNum, PetalHeight, innerPetalNum, innerPetalHeight, circleMorph, innerCircleMorph) => {
+  const outerCircle = genRanCir(x, y, r, circleMorph)
+  const innerCircle = genRanCir(x + 1.5, y + 1.5, r - 3, innerCircleMorph)
+  genPetal(x, y, r, petalNum, petalHeight)
+  genPetal(x, y, r, innerPetalNum, innerPetalHeight)
+  genStem(x, y, r, petalHeight)
+  drawLines([outerCircle, innerCircle])
+}
 
-// bt.translate([a], [20, 20]) use full for later
-drawLines([a, b])
+genFlower(r, x, y, petalNum, petalHeight, innerPetalNum, innerPetalHeight, circleMorph, innerCircleMorph)
+
+
+
 
 
 
