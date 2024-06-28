@@ -11,9 +11,9 @@ setDocDimensions(width, height)
 const r = Math.floor((Math.random() * 10) + 5)
 const x = (width - r) / 2 
 const y = 65
-const petalNum = Math.floor((Math.random() * 12) + 7)
+const petalNum = Math.floor((Math.random() * 5) + 5)
 const petalHeight = Math.floor((Math.random() * 20) + 20)
-const innerPetalNum = Math.floor((Math.random() * 7) + 5)
+const innerPetalNum = Math.floor((Math.random() * 3) + 5)
 const innerPetalHeight = Math.floor((Math.random() * 10) + 5)
 const circleMorph = Math.floor((Math.random() * 8) + 1)
 const innerCircleMorph = Math.floor((Math.random() * 3) + 1)
@@ -52,6 +52,7 @@ const genPetal = (x, y, r, num, h) => {
   r = r / 1.5
   x = x + r * 0.75
   y = y + r * 0.75
+  
   const circlePoints = getCirclePoints(x, y, r, num);
   const outerCircPoints = getCirclePoints(x, y, r + h, num);
   
@@ -87,8 +88,8 @@ const genPetal = (x, y, r, num, h) => {
     petal.goTo([xMidHighCor2,yMidHighCor2])
     petal.goTo([xMidCor2,yMidCor2])
     petal.goTo([xCor, yCor])
-    drawLines([bt.catmullRom(petal.lines()[0],)])
-    drawLines(petal.lines())
+    drawLines([bt.catmullRom(petal.lines()[0])])
+    //drawLines(petal.lines())
   }
 }
 
